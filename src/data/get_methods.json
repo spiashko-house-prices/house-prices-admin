@@ -1,0 +1,7 @@
+[
+  "gradientBoosting",
+  "linear",
+  "ridge",
+  "lasso_lars",
+  "elastic_net"
+]

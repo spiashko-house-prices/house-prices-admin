@@ -1,0 +1,17 @@
+{
+  "errorsPerTrainer": [
+    {
+      "error": 0.1123512184603935,
+      "name": "gradientBoosting"
+    },
+    {
+      "error": 0.14286109879154865,
+      "name": "linear"
+    },
+    {
+      "error": 0.14321716376699978,
+      "name": "ridge"
+    }
+  ],
+  "finalError": 0.13453328509337553
+} 

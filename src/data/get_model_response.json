@@ -1,0 +1,184 @@
+{
+  "boolean": [
+    {
+      "featureName": "HasBasement"
+    },
+    {
+      "featureName": "HasGarage"
+    },
+    {
+      "featureName": "Has2ndFloor"
+    },
+    {
+      "featureName": "HasMasVnr"
+    },
+    {
+      "featureName": "HasWoodDeck"
+    },
+    {
+      "featureName": "HasPorch"
+    },
+    {
+      "featureName": "HasPool"
+    },
+    {
+      "featureName": "IsNew"
+    }
+  ],
+  "categorical": [
+    {
+      "featureName": "GarageFinish",
+      "values": [
+        "No",
+        "Unf",
+        "RFn",
+        "Fin"
+      ]
+    },
+    {
+      "featureName": "Neighborhood",
+      "values": [
+        "MeadowV",
+        "IDOTRR",
+        "BrDale",
+        "BrkSide",
+        "Edwards",
+        "OldTown",
+        "Sawyer",
+        "Blueste",
+        "SWISU",
+        "NPkVill",
+        "NAmes",
+        "Mitchel",
+        "SawyerW",
+        "NWAmes",
+        "Gilbert",
+        "Blmngtn",
+        "CollgCr",
+        "Crawfor",
+        "ClearCr",
+        "Somerst",
+        "Veenker",
+        "Timber",
+        "StoneBr",
+        "NridgHt",
+        "NoRidge"
+      ]
+    },
+    {
+      "featureName": "Foundation",
+      "values": [
+        "Slab",
+        "BrkTil",
+        "CBlock",
+        "Stone",
+        "Wood",
+        "PConc"
+      ]
+    },
+    {
+      "featureName": "MasVnrType",
+      "values": [
+        "BrkCmn",
+        "None",
+        "BrkFace",
+        "Stone"
+      ]
+    },
+    {
+      "featureName": "GarageType",
+      "values": [
+        "No",
+        "CarPort",
+        "Detchd",
+        "2Types",
+        "Basment",
+        "Attchd",
+        "BuiltIn"
+      ]
+    },
+    {
+      "featureName": "MSSubClass",
+      "values": [
+        "SC30",
+        "SC180",
+        "SC45",
+        "SC190",
+        "SC90",
+        "SC160",
+        "SC50",
+        "SC85",
+        "SC40",
+        "SC70",
+        "SC80",
+        "SC20",
+        "SC75",
+        "SC120",
+        "SC60"
+      ]
+    }
+  ],
+  "numerical": [
+    {
+      "featureName": "TotalBsmtSF",
+      "max": 6110,
+      "min": 0,
+      "type": "int"
+    },
+    {
+      "featureName": "YearRemodAdd",
+      "max": 2010,
+      "min": 1950,
+      "type": "int"
+    },
+    {
+      "featureName": "BsmtFinSF1",
+      "max": 5644,
+      "min": 0,
+      "type": "int"
+    },
+    {
+      "featureName": "GarageCars",
+      "max": 4,
+      "min": 0,
+      "type": "int"
+    },
+    {
+      "featureName": "FullBath",
+      "max": 3,
+      "min": 0,
+      "type": "int"
+    },
+    {
+      "featureName": "BsmtQual",
+      "max": 5,
+      "min": 0,
+      "type": "int"
+    },
+    {
+      "featureName": "YearBuilt",
+      "max": 2010,
+      "min": 1872,
+      "type": "int"
+    },
+    {
+      "featureName": "FireplaceQu",
+      "max": 5,
+      "min": 0,
+      "type": "int"
+    },
+    {
+      "featureName": "GrLivArea",
+      "max": 5642,
+      "min": 334,
+      "type": "int"
+    },
+    {
+      "featureName": "MasVnrArea",
+      "max": 1600,
+      "min": 0,
+      "type": "float"
+    }
+  ],
+  "total": 24
+} 
