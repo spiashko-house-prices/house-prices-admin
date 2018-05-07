@@ -1,7 +1,7 @@
 export const ALL_FEATURES_LOADING = 'ALL_FEATURES_LOADING';
 export const ALL_FEATURES_LOADED = 'ALL_FEATURES_LOADED';
-export const LOAD_ERRORS = 'LOAD_ERRORS';
 export const LOAD_METHODS = 'LOAD_METHODS';
+export const LOAD_ADMIN_MODEL = 'LOAD_ADMIN_MODEL';
 export const ADD_TO_BASE_FEATURES = 'ADD_TO_BASE_FEATURES';
 export const CHANGE_SELECTED_BASE_FEATURE = 'CHANGE_SELECTED_BASE_FEATURE';
 export const REMOVE_FROM_BASE_FEATURES = 'REMOVE_FROM_BASE_FEATURES';
@@ -18,6 +18,7 @@ export const ADD_TRAIN_METHOD = 'ADD_TRAIN_METHOD';
 export const CHANGE_SELECTED_TRAIN_METHOD = 'CHANGE_SELECTED_TRAIN_METHOD';
 export const CHANGE_SELECTED_TRAIN_VALUE = 'CHANGE_SELECTED_TRAIN_VALUE';
 export const REMOVE_TRAIN_METHOD = 'REMOVE_TRAIN_METHOD';
+export const LOAD_ERRORS = 'LOAD_ERRORS';
 
 export function loadAllFeatures(features) {
   return {type: ALL_FEATURES_LOADED, features};
@@ -33,6 +34,10 @@ export function loadErrors(errors) {
 
 export function loadMethods(availableMethods) {
   return {type: LOAD_METHODS, availableMethods};
+}
+
+export function loadAdminModel(adminModel) {
+  return {type: LOAD_ADMIN_MODEL, adminModel};
 }
 
 export function addToBaseFeatures() {

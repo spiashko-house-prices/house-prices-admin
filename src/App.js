@@ -6,11 +6,22 @@ import {
   loadErrors,
   loadingAllFeatures,
   loadMethods,
+  loadAdminModel
 } from './actions/actions';
 import {connect} from 'react-redux';
 import AddBaseFeature from './components/AddBaseFeature/AddBaseFeature';
 import BaseFeatureList from './components/BaseFeatureList/BaseFeatureList';
-import {Button, Col, Grid, Row, Tab, Tabs} from 'react-bootstrap';
+import {
+  Button,
+  Col,
+  Grid,
+  Nav,
+  Navbar,
+  NavItem,
+  Row,
+  Tab,
+  Tabs,
+} from 'react-bootstrap';
 import ResponseArea from './components/ResponseArea/ResponseArea';
 import AddMethod from './components/AddMethod/AddMethod';
 import MethodList from './components/MethodList/MethodList';
@@ -28,6 +39,8 @@ import ToBooleanTransformList
   from './components/ToBooleanTransformList/ToBooleanTransformList';
 
 const backend = process.env.REACT_APP_BACKEND;
+const username = process.env.REACT_APP_USERNAME;
+const password = process.env.REACT_APP_PASSWORD;
 
 class App extends Component {
 
@@ -39,7 +52,11 @@ class App extends Component {
   componentDidMount() {
     store.dispatch(loadingAllFeatures());
 
+    let myHeaders = new Headers();
+    myHeaders.append('Authorization', 'Basic ' + btoa(username + ":" + password));
+
     let myInit = {
+      headers: myHeaders,
       method: 'GET',
       mode: 'cors',
       cache: 'no-store',
@@ -66,6 +83,17 @@ class App extends Component {
           console.log('There has been a problem with your fetch operation: ' +
               error.message);
         });
+
+    fetch(backend + '/api/admin_model', myInit).
+        then(data => data.json()).
+        then(data => {
+          console.log('admin_model: ', data);
+          store.dispatch(loadAdminModel(data));
+        }).
+        catch(error => {
+          console.log('There has been a problem with your fetch operation: ' +
+              error.message);
+        });
   }
 
   handleClick() {
@@ -82,6 +110,7 @@ class App extends Component {
 
     let myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append('Authorization', 'Basic ' + btoa(username + ":" + password));
 
     let myInit = {
       method: 'POST',

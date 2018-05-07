@@ -7,19 +7,20 @@ import {
   ADD_TRAIN_METHOD,
   ALL_FEATURES_LOADED,
   ALL_FEATURES_LOADING,
+  LOAD_METHODS,
+  LOAD_ADMIN_MODEL,
   CHANGE_SELECTED_BASE_FEATURE,
   CHANGE_SELECTED_TO_BOOLEAN_TRANSFORM,
   CHANGE_SELECTED_TO_LOG_TRANSFORM,
   CHANGE_SELECTED_TO_POW_TRANSFORM,
   CHANGE_SELECTED_TRAIN_METHOD,
   CHANGE_SELECTED_TRAIN_VALUE,
-  LOAD_ERRORS,
-  LOAD_METHODS,
   REMOVE_FROM_BASE_FEATURES,
   REMOVE_FROM_TO_BOOLEAN_TRANSFORM,
   REMOVE_FROM_TO_LOG_TRANSFORM,
   REMOVE_FROM_TO_POW_TRANSFORM,
   REMOVE_TRAIN_METHOD,
+  LOAD_ERRORS,
 } from '../actions/actions';
 
 function round(value, decimals) {
@@ -70,6 +71,29 @@ function featuresReducer(state = defFeatures, action) {
         availableForBooleanTransform: action.features.slice(0),
         selectedToBooleanTransform: action.features[0],
         selectedBaseFeature: action.features[0],
+      };
+    case LOAD_ADMIN_MODEL:
+
+      let features = state.features.filter(feature => !action.adminModel.baseFeatures.includes(feature));
+      let availableForPowTransform =  action.adminModel.baseFeatures.filter(feature => !action.adminModel.toPowTransform.includes(feature));
+      let availableForLogTransform = action.adminModel.baseFeatures.filter(feature => !action.adminModel.toLogTransform.includes(feature));
+      let availableForBooleanTransform = state.features.filter(feature => !action.adminModel.toBooleanTransform.map(o => o.featureName).includes(feature));
+
+
+      return {
+        ...state,
+        baseFeatures: action.adminModel.baseFeatures,
+        toBooleanTransform: action.adminModel.toBooleanTransform,
+        toLogTransform: action.adminModel.toLogTransform,
+        toPowTransform: action.adminModel.toPowTransform,
+        selectedBaseFeature: features.slice(0),
+        selectedToPowTransform: availableForPowTransform.slice(0),
+        selectedToLogTransform: availableForLogTransform.slice(0),
+        selectedToBooleanTransform: availableForBooleanTransform.slice(0),
+        features: features,
+        availableForPowTransform: availableForPowTransform,
+        availableForLogTransform: availableForLogTransform,
+        availableForBooleanTransform: availableForBooleanTransform,
       };
     case ADD_TO_BASE_FEATURES:
       index = state.features.indexOf(state.selectedBaseFeature);
