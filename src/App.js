@@ -67,28 +67,28 @@ class App extends Component {
         then(data => {
           console.log('features: ', data);
           store.dispatch(loadAllFeatures(data));
-        }).
-        catch(error => {
-          console.log('There has been a problem with your fetch operation: ' +
-              error.message);
-        });
 
-    fetch(backend + '/api/methods', myInit).
-        then(data => data.json()).
-        then(data => {
-          console.log('methods: ', data);
-          store.dispatch(loadMethods(data));
-        }).
-        catch(error => {
-          console.log('There has been a problem with your fetch operation: ' +
-              error.message);
-        });
+          fetch(backend + '/api/methods', myInit).
+              then(data => data.json()).
+              then(data => {
+                console.log('methods: ', data);
+                store.dispatch(loadMethods(data));
 
-    fetch(backend + '/api/admin_model', myInit).
-        then(data => data.json()).
-        then(data => {
-          console.log('admin_model: ', data);
-          store.dispatch(loadAdminModel(data));
+                fetch(backend + '/api/admin_model', myInit).
+                    then(data => data.json()).
+                    then(data => {
+                      console.log('admin_model: ', data);
+                      store.dispatch(loadAdminModel(data));
+                    }).
+                    catch(error => {
+                      console.log('There has been a problem with your fetch operation: ' +
+                          error.message);
+                    });
+              }).
+              catch(error => {
+                console.log('There has been a problem with your fetch operation: ' +
+                    error.message);
+              });
         }).
         catch(error => {
           console.log('There has been a problem with your fetch operation: ' +
@@ -148,7 +148,7 @@ class App extends Component {
           <Grid>
             <Row>
               <Col md={10} mdOffset={1}>
-                <Tabs defaultActiveKey={4} id="main-tab">
+                <Tabs defaultActiveKey={1} id="main-tab">
                   <Tab eventKey={1} title="Base Features">
                     <Row>
                       <Col md={8} mdOffset={2}>

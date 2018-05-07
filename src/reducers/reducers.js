@@ -284,6 +284,19 @@ function methodsReducer(state = defMethodsState, action) {
         availableMethods: action.availableMethods,
         selectedMethod: action.availableMethods[0],
       };
+    case LOAD_ADMIN_MODEL:
+
+      let availableMethods = state.availableMethods.filter(feature => !action.adminModel.methods.map(o => o.name).includes(feature));
+      let usedPercentages = action.adminModel.methods.map(o => o.value).reduce((prev, curr) => prev+curr);
+
+      return {
+        ...state,
+        usedMethods: action.adminModel.methods,
+        availableMethods: availableMethods,
+        selectedMethod: availableMethods[0],
+        remainingPercentages: 1-usedPercentages,
+        selectedValue: 1-usedPercentages,
+      };
     case ADD_TRAIN_METHOD:
 
       if (state.selectedValue === 0) {
