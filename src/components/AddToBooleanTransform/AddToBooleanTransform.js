@@ -3,7 +3,6 @@ import {
   addToToBooleanTransform,
   changeSelectedToBooleanTransform,
 } from '../../actions/actions';
-import {store} from '../../index';
 import {
   Button,
   Col,
@@ -16,11 +15,6 @@ import {connect} from 'react-redux';
 import './AddToBooleanTransform.css';
 
 class AddToBooleanTransform extends Component {
-  constructor() {
-    super();
-    store.subscribe(() => this.forceUpdate());
-  }
-
   render() {
     const {availableForBooleanTransform, selectedValue} = this.props;
 
@@ -31,9 +25,9 @@ class AddToBooleanTransform extends Component {
         <Form
             onSubmit={(e) => {
               e.preventDefault();
-              store.dispatch(
+              this.props.
                   addToToBooleanTransform(this.inputNewName.value,
-                      parseFloat(this.inputThreshold.value)));
+                      parseFloat(this.inputThreshold.value));
             }}
             horizontal
             className="AddToBooleanTransform">
@@ -49,8 +43,8 @@ class AddToBooleanTransform extends Component {
                   componentClass="select"
                   value={selectedValue}
                   onChange={(e) =>
-                      store.dispatch(
-                          changeSelectedToBooleanTransform(e.target.value))}>
+                      this.props.
+                          changeSelectedToBooleanTransform(e.target.value)}>
                 {listOptions}
               </FormControl>
             </Col>
@@ -105,11 +99,23 @@ class AddToBooleanTransform extends Component {
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
     availableForBooleanTransform: state.featuresReducer.availableForBooleanTransform,
     selectedValue: state.featuresReducer.selectedToBooleanTransform,
   };
-}
+};
 
-export default connect(mapStateToProps)(AddToBooleanTransform);
+const mapDispatchToProps = dispatch => {
+  return {
+    addToToBooleanTransform: (name, threshold) =>
+        dispatch(addToToBooleanTransform(name, threshold)),
+    changeSelectedToBooleanTransform: (value) =>
+        dispatch(changeSelectedToBooleanTransform(value)),
+  };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(AddToBooleanTransform);

@@ -1,16 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {store} from '../../index';
 import {Button, Col, ListGroup, ListGroupItem, Row} from 'react-bootstrap';
 import {removeFromToBooleanTransform} from '../../actions/actions';
 import './ToBooleanTransformList.css';
 
 class ToBooleanTransformList extends Component {
-  constructor() {
-    super();
-    store.subscribe(() => this.forceUpdate());
-  }
-
   render() {
     let {toBooleanTransform} = this.props;
     let itemList = toBooleanTransform.map((item, index) => (
@@ -30,8 +24,8 @@ class ToBooleanTransformList extends Component {
                   bsSize="xsmall"
                   bsStyle="danger"
                   onClick={() =>
-                      store.dispatch(
-                          removeFromToBooleanTransform(item.featureName))}>
+                      this.props.
+                          removeFromToBooleanTransform(item.featureName)}>
                 Delete
               </Button>
             </Col>
@@ -47,10 +41,20 @@ class ToBooleanTransformList extends Component {
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
     toBooleanTransform: state.featuresReducer.toBooleanTransform,
   };
-}
+};
 
-export default connect(mapStateToProps)(ToBooleanTransformList);
+const mapDispatchToProps = dispatch => {
+  return {
+    removeFromToBooleanTransform: (value) =>
+        dispatch(removeFromToBooleanTransform(value)),
+  };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ToBooleanTransformList);

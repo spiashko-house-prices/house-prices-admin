@@ -1,16 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {store} from '../../index';
 import {Button, Col, ListGroup, ListGroupItem, Row} from 'react-bootstrap';
 import './ToLogTransformList.css';
 import {removeFromToLogTransform} from '../../actions/actions';
 
 class ToLogTransformList extends Component {
-  constructor() {
-    super();
-    store.subscribe(() => this.forceUpdate());
-  }
-
   render() {
     let {toLogTransform} = this.props;
     let itemList = toLogTransform.map((item, index) => (
@@ -24,7 +18,7 @@ class ToLogTransformList extends Component {
                   bsSize="xsmall"
                   bsStyle="danger"
                   onClick={() =>
-                      store.dispatch(removeFromToLogTransform(item))}>
+                      this.props.removeFromToLogTransform(item)}>
                 Delete
               </Button>
             </Col>
@@ -40,10 +34,20 @@ class ToLogTransformList extends Component {
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
     toLogTransform: state.featuresReducer.toLogTransform,
   };
-}
+};
 
-export default connect(mapStateToProps)(ToLogTransformList);
+const mapDispatchToProps = dispatch => {
+  return {
+    removeFromToLogTransform: (value) =>
+        dispatch(removeFromToLogTransform(value)),
+  };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ToLogTransformList);

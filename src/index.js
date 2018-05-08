@@ -7,7 +7,7 @@ import registerServiceWorker from './registerServiceWorker';
 import housePricesAdminApp from './reducers/reducers';
 import {Provider} from 'react-redux';
 
-export let store = createStore(housePricesAdminApp);
+let store = createStore(housePricesAdminApp);
 
 ReactDOM.render(
     <Provider store={store}>

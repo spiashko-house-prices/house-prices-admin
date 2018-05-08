@@ -6,29 +6,62 @@ import {
   ADD_TO_TO_POW_TRANSFORM,
   ADD_TRAIN_METHOD,
   ALL_FEATURES_LOADED,
-  ALL_FEATURES_LOADING,
-  LOAD_METHODS,
-  LOAD_ADMIN_MODEL,
+  ALL_FEATURES_LOADING, CHANGE_DATASET,
   CHANGE_SELECTED_BASE_FEATURE,
   CHANGE_SELECTED_TO_BOOLEAN_TRANSFORM,
   CHANGE_SELECTED_TO_LOG_TRANSFORM,
   CHANGE_SELECTED_TO_POW_TRANSFORM,
   CHANGE_SELECTED_TRAIN_METHOD,
   CHANGE_SELECTED_TRAIN_VALUE,
+  LOAD_ADMIN_MODEL,
+  LOAD_ERRORS,
+  LOAD_METHODS,
   REMOVE_FROM_BASE_FEATURES,
   REMOVE_FROM_TO_BOOLEAN_TRANSFORM,
   REMOVE_FROM_TO_LOG_TRANSFORM,
   REMOVE_FROM_TO_POW_TRANSFORM,
   REMOVE_TRAIN_METHOD,
-  LOAD_ERRORS,
 } from '../actions/actions';
 
 function round(value, decimals) {
   return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
 }
 
+const amesDataset = {
+  backend: process.env.REACT_APP_AMES_BACKEND,
+  username: process.env.REACT_APP_AMES_USERNAME,
+  password: process.env.REACT_APP_AMES_PASSWORD,
+};
+
+const kcDataset = {
+  backend: process.env.REACT_APP_KC_BACKEND,
+  username: process.env.REACT_APP_KC_USERNAME,
+  password: process.env.REACT_APP_KC_PASSWORD,
+};
+
+const defDataset = {
+  dataset: amesDataset,
+};
+
+function datasetReducer(state = defDataset, action){
+  switch (action.type) {
+    case CHANGE_DATASET:
+      console.log("CHANGE_DATASET");
+      switch (action.datasetName){
+        case "ames":
+          return {...state, dataset: amesDataset};
+        case "kc":
+          return {...state, dataset: kcDataset};
+        default:
+          return {...state, dataset: amesDataset};
+      }
+    default:
+      return state;
+  }
+}
+
 const defLoadState = {
-  status: 'empty',
+  status: 'loading',
 };
 
 function loadReducer(state = defLoadState, action) {
@@ -74,11 +107,15 @@ function featuresReducer(state = defFeatures, action) {
       };
     case LOAD_ADMIN_MODEL:
 
-      let features = state.features.filter(feature => !action.adminModel.baseFeatures.includes(feature));
-      let availableForPowTransform =  action.adminModel.baseFeatures.filter(feature => !action.adminModel.toPowTransform.includes(feature));
-      let availableForLogTransform = action.adminModel.baseFeatures.filter(feature => !action.adminModel.toLogTransform.includes(feature));
-      let availableForBooleanTransform = state.features.filter(feature => !action.adminModel.toBooleanTransform.map(o => o.featureName).includes(feature));
-
+      let features = state.features.filter(
+          feature => !action.adminModel.baseFeatures.includes(feature));
+      let availableForPowTransform = action.adminModel.baseFeatures.filter(
+          feature => !action.adminModel.toPowTransform.includes(feature));
+      let availableForLogTransform = action.adminModel.baseFeatures.filter(
+          feature => !action.adminModel.toLogTransform.includes(feature));
+      let availableForBooleanTransform = state.features.filter(
+          feature => !action.adminModel.toBooleanTransform.map(
+              o => o.featureName).includes(feature));
 
       return {
         ...state,
@@ -86,10 +123,10 @@ function featuresReducer(state = defFeatures, action) {
         toBooleanTransform: action.adminModel.toBooleanTransform,
         toLogTransform: action.adminModel.toLogTransform,
         toPowTransform: action.adminModel.toPowTransform,
-        selectedBaseFeature: features.slice(0),
-        selectedToPowTransform: availableForPowTransform.slice(0),
-        selectedToLogTransform: availableForLogTransform.slice(0),
-        selectedToBooleanTransform: availableForBooleanTransform.slice(0),
+        selectedBaseFeature: features[0],
+        selectedToPowTransform: availableForPowTransform[0],
+        selectedToLogTransform: availableForLogTransform[0],
+        selectedToBooleanTransform: availableForBooleanTransform[0],
         features: features,
         availableForPowTransform: availableForPowTransform,
         availableForLogTransform: availableForLogTransform,
@@ -111,6 +148,10 @@ function featuresReducer(state = defFeatures, action) {
       state.features.splice(index, 1);
       return {
         ...state,
+        baseFeatures: state.baseFeatures.slice(0),
+        features: state.features.slice(0),
+        availableForPowTransform: state.availableForPowTransform.slice(0),
+        availableForLogTransform: state.availableForLogTransform.slice(0),
         selectedBaseFeature: state.features[0],
         selectedToPowTransform: state.availableForPowTransform[0],
         selectedToLogTransform: state.availableForLogTransform[0],
@@ -151,7 +192,14 @@ function featuresReducer(state = defFeatures, action) {
       }
 
       return {
-        ...state, selectedBaseFeature: action.featureName,
+        ...state,
+        baseFeatures: state.baseFeatures.slice(0),
+        features: state.features.slice(0),
+        availableForPowTransform: state.availableForPowTransform.slice(0),
+        availableForLogTransform: state.availableForLogTransform.slice(0),
+        toPowTransform: state.toPowTransform.slice(0),
+        toLogTransform: state.toLogTransform.slice(0),
+        selectedBaseFeature: action.featureName,
       };
     case ADD_TO_TO_POW_TRANSFORM:
       index = state.availableForPowTransform.indexOf(
@@ -166,7 +214,10 @@ function featuresReducer(state = defFeatures, action) {
       state.toPowTransform.push(state.selectedToPowTransform);
       state.availableForPowTransform.splice(index, 1);
       return {
-        ...state, selectedToPowTransform: state.availableForPowTransform[0],
+        ...state,
+        availableForPowTransform: state.availableForPowTransform.slice(0),
+        toPowTransform: state.toPowTransform.slice(0),
+        selectedToPowTransform: state.availableForPowTransform[0],
       };
     case CHANGE_SELECTED_TO_POW_TRANSFORM:
       return {
@@ -177,7 +228,10 @@ function featuresReducer(state = defFeatures, action) {
       state.toPowTransform.splice(index, 1);
       state.availableForPowTransform.push(action.featureName);
       return {
-        ...state, selectedToPowTransform: action.featureName,
+        ...state,
+        availableForPowTransform: state.availableForPowTransform.slice(0),
+        toPowTransform: state.toPowTransform.slice(0),
+        selectedToPowTransform: action.featureName,
       };
     case ADD_TO_TO_LOG_TRANSFORM:
       index = state.availableForLogTransform.indexOf(
@@ -192,7 +246,10 @@ function featuresReducer(state = defFeatures, action) {
       state.toLogTransform.push(state.selectedToLogTransform);
       state.availableForLogTransform.splice(index, 1);
       return {
-        ...state, selectedToLogTransform: state.availableForLogTransform[0],
+        ...state,
+        availableForLogTransform: state.availableForLogTransform.slice(0),
+        toLogTransform: state.toLogTransform.slice(0),
+        selectedToLogTransform: state.availableForLogTransform[0],
       };
     case CHANGE_SELECTED_TO_LOG_TRANSFORM:
       return {
@@ -203,7 +260,10 @@ function featuresReducer(state = defFeatures, action) {
       state.toLogTransform.splice(index, 1);
       state.availableForLogTransform.push(action.featureName);
       return {
-        ...state, selectedToLogTransform: action.featureName,
+        ...state,
+        availableForLogTransform: state.availableForLogTransform.slice(0),
+        toLogTransform: state.toLogTransform.slice(0),
+        selectedToLogTransform: action.featureName,
       };
     case ADD_TO_TO_BOOLEAN_TRANSFORM:
       index = state.availableForBooleanTransform.indexOf(
@@ -231,6 +291,8 @@ function featuresReducer(state = defFeatures, action) {
       });
       return {
         ...state,
+        availableForBooleanTransform: state.availableForBooleanTransform.slice(0),
+        toBooleanTransform: state.toBooleanTransform.slice(0),
         selectedToBooleanTransform: state.availableForBooleanTransform[0],
       };
     case CHANGE_SELECTED_TO_BOOLEAN_TRANSFORM:
@@ -244,6 +306,8 @@ function featuresReducer(state = defFeatures, action) {
       state.availableForBooleanTransform.push(action.featureName);
       return {
         ...state,
+        availableForBooleanTransform: state.availableForBooleanTransform.slice(0),
+        toBooleanTransform: state.toBooleanTransform.slice(0),
         selectedToBooleanTransform: action.featureName,
       };
     default:
@@ -257,6 +321,11 @@ const defLoadPredictionState = {
 
 function loadErrorsReducer(state = defLoadPredictionState, action) {
   switch (action.type) {
+    case LOAD_ADMIN_MODEL:
+      return {
+        ...state,
+        errors: null,
+      };
     case LOAD_ERRORS:
       return {
         ...state,
@@ -286,16 +355,19 @@ function methodsReducer(state = defMethodsState, action) {
       };
     case LOAD_ADMIN_MODEL:
 
-      let availableMethods = state.availableMethods.filter(feature => !action.adminModel.methods.map(o => o.name).includes(feature));
-      let usedPercentages = action.adminModel.methods.map(o => o.value).reduce((prev, curr) => prev+curr);
+      let availableMethods = state.availableMethods.filter(
+          feature => !action.adminModel.methods.map(o => o.name).
+              includes(feature));
+      let usedPercentages = action.adminModel.methods.map(o => o.value).
+          reduce((prev, curr) => prev + curr);
 
       return {
         ...state,
         usedMethods: action.adminModel.methods,
         availableMethods: availableMethods,
         selectedMethod: availableMethods[0],
-        remainingPercentages: 1-usedPercentages,
-        selectedValue: 1-usedPercentages,
+        remainingPercentages: 1 - usedPercentages,
+        selectedValue: 1 - usedPercentages,
       };
     case ADD_TRAIN_METHOD:
 
@@ -319,6 +391,8 @@ function methodsReducer(state = defMethodsState, action) {
       state.availableMethods.splice(index, 1);
       return {
         ...state,
+        usedMethods: state.usedMethods.slice(0),
+        availableMethods: state.availableMethods.slice(0),
         selectedMethod: state.availableMethods[0],
         remainingPercentages: round(
             (state.remainingPercentages - state.selectedValue), 2),
@@ -340,6 +414,8 @@ function methodsReducer(state = defMethodsState, action) {
       state.availableMethods.push(action.name);
       return {
         ...state,
+        usedMethods: state.usedMethods.slice(0),
+        availableMethods: state.availableMethods.slice(0),
         selectedMethod: action.name,
         remainingPercentages: round(
             (state.remainingPercentages + vacantPercentages), 2),
@@ -352,6 +428,7 @@ function methodsReducer(state = defMethodsState, action) {
 }
 
 const housePricesAdminApp = combineReducers({
+  datasetReducer,
   loadReducer,
   featuresReducer,
   loadErrorsReducer,

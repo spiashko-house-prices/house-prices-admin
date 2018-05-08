@@ -16,11 +16,6 @@ import {connect} from 'react-redux';
 import './AddToPowTransform.css';
 
 class AddToPowTransform extends Component {
-  constructor() {
-    super();
-    store.subscribe(() => this.forceUpdate());
-  }
-
   render() {
     const {availableForPowTransform, selectedValue} = this.props;
 
@@ -42,8 +37,8 @@ class AddToPowTransform extends Component {
                   componentClass="select"
                   value={selectedValue}
                   onChange={(e) =>
-                      store.dispatch(
-                          changeSelectedToPowTransform(e.target.value))}>
+                      this.props.
+                          changeSelectedToPowTransform(e.target.value)}>
                 {listOptions}
               </FormControl>
             </Col>
@@ -53,7 +48,7 @@ class AddToPowTransform extends Component {
                  lgOffset={2} lg={10} mdOffset={2} md={10} smOffset={2} sm={10}>
               <Button
                   className="AddToPowTransform-button"
-                  onClick={() => store.dispatch(addToToPowTransform())}>
+                  onClick={() => this.props.addToToPowTransform()}>
                 Add
               </Button>
             </Col>
@@ -70,4 +65,16 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(AddToPowTransform);
+const mapDispatchToProps = dispatch => {
+  return {
+    changeSelectedToPowTransform: (value) =>
+        dispatch(changeSelectedToPowTransform(value)),
+    addToToPowTransform: () =>
+        dispatch(addToToPowTransform()),
+  };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(AddToPowTransform);

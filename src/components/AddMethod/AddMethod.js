@@ -4,7 +4,6 @@ import {
   changeSelectedTrainMethod,
   changeSelectedTrainValue,
 } from '../../actions/actions';
-import {store} from '../../index';
 import {
   Button,
   Col,
@@ -17,11 +16,6 @@ import {connect} from 'react-redux';
 import './AddMethod.css';
 
 class AddMethod extends Component {
-  constructor() {
-    super();
-    store.subscribe(() => this.forceUpdate());
-  }
-
   render() {
     const {availableMethods, selectedMethod, selectedValue, remainingPercentages} = this.props;
 
@@ -42,8 +36,8 @@ class AddMethod extends Component {
                   componentClass="select"
                   value={selectedMethod}
                   onChange={(e) =>
-                      store.dispatch(
-                          changeSelectedTrainMethod(e.target.value))}>
+                      this.props.
+                          changeSelectedTrainMethod(e.target.value)}>
                 {listOptions}
               </FormControl>
             </Col>
@@ -63,10 +57,10 @@ class AddMethod extends Component {
                   step={0.01}
                   onChange={() => {
                     if (this.inputNumber.value <= remainingPercentages) {
-                      store.dispatch(
+                      this.props.
                           changeSelectedTrainValue(
                               this.inputNumber.value === '' ?
-                                  0 : parseFloat(this.inputNumber.value)));
+                                  0 : parseFloat(this.inputNumber.value));
                     }
                     else {
                       this.inputNumber.value = remainingPercentages;
@@ -82,7 +76,7 @@ class AddMethod extends Component {
                  lgOffset={2} lg={10} mdOffset={2} md={10} smOffset={2} sm={10}>
               <Button
                   className="AddMethod-button"
-                  onClick={() => store.dispatch(addTrainMethod())}>
+                  onClick={() => this.props.addTrainMethod()}>
                 Add
               </Button>
             </Col>
@@ -101,4 +95,17 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(AddMethod);
+const mapDispatchToProps = dispatch => {
+  return {
+    addTrainMethod: () => dispatch(addTrainMethod()),
+    changeSelectedTrainValue: (value) =>
+        dispatch(changeSelectedTrainValue(value)),
+    changeSelectedTrainMethod: (value) =>
+        dispatch(changeSelectedTrainMethod(value)),
+  };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(AddMethod);

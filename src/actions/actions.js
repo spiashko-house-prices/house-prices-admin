@@ -19,6 +19,7 @@ export const CHANGE_SELECTED_TRAIN_METHOD = 'CHANGE_SELECTED_TRAIN_METHOD';
 export const CHANGE_SELECTED_TRAIN_VALUE = 'CHANGE_SELECTED_TRAIN_VALUE';
 export const REMOVE_TRAIN_METHOD = 'REMOVE_TRAIN_METHOD';
 export const LOAD_ERRORS = 'LOAD_ERRORS';
+export const CHANGE_DATASET = 'CHANGE_DATASET';
 
 export function loadAllFeatures(features) {
   return {type: ALL_FEATURES_LOADED, features};
@@ -110,4 +111,8 @@ export function changeSelectedTrainValue(value) {
 
 export function removeTrainMethod(name) {
   return {type: REMOVE_TRAIN_METHOD, name};
+}
+
+export function changeDataset(datasetName) {
+  return {type: CHANGE_DATASET, datasetName};
 }

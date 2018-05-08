@@ -3,7 +3,6 @@ import {
   addToBaseFeatures,
   changeSelectedBaseFeatures,
 } from '../../actions/actions';
-import {store} from '../../index';
 import {
   Button,
   Col,
@@ -16,11 +15,6 @@ import {connect} from 'react-redux';
 import './AddBaseFeature.css';
 
 class AddBaseFeature extends Component {
-  constructor() {
-    super();
-    store.subscribe(() => this.forceUpdate());
-  }
-
   render() {
     const {features, selectedValue} = this.props;
 
@@ -42,8 +36,7 @@ class AddBaseFeature extends Component {
                   componentClass="select"
                   value={selectedValue}
                   onChange={(e) =>
-                      store.dispatch(
-                          changeSelectedBaseFeatures(e.target.value))}>
+                      this.props.changeSelectedBaseFeatures(e.target.value)}>
                 {listOptions}
               </FormControl>
             </Col>
@@ -53,7 +46,7 @@ class AddBaseFeature extends Component {
                  lgOffset={2} lg={10} mdOffset={2} md={10} smOffset={2} sm={10}>
               <Button
                   className="AddMethod-button"
-                  onClick={() => store.dispatch(addToBaseFeatures())}>
+                  onClick={() => this.props.addToBaseFeatures()}>
                 Add
               </Button>
             </Col>
@@ -63,11 +56,22 @@ class AddBaseFeature extends Component {
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
     features: state.featuresReducer.features,
     selectedValue: state.featuresReducer.selectedBaseFeature,
   };
-}
+};
 
-export default connect(mapStateToProps)(AddBaseFeature);
+const mapDispatchToProps = dispatch => {
+  return {
+    addToBaseFeatures: () => dispatch(addToBaseFeatures()),
+    changeSelectedBaseFeatures: (value) =>
+        dispatch(changeSelectedBaseFeatures(value)),
+  };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(AddBaseFeature);

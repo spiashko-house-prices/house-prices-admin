@@ -1,16 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {store} from '../../index';
 import {Button, Col, ListGroup, ListGroupItem, Row} from 'react-bootstrap';
 import './ToPowTransformList.css';
 import {removeFromToPowTransform} from '../../actions/actions';
 
 class ToPowTransformList extends Component {
-  constructor() {
-    super();
-    store.subscribe(() => this.forceUpdate());
-  }
-
   render() {
     let {toPowTransform} = this.props;
     let itemList = toPowTransform.map((item, index) => (
@@ -24,7 +18,7 @@ class ToPowTransformList extends Component {
                   bsSize="xsmall"
                   bsStyle="danger"
                   onClick={() =>
-                      store.dispatch(removeFromToPowTransform(item))}>
+                      this.props.removeFromToPowTransform(item)}>
                 Delete
               </Button>
             </Col>
@@ -40,10 +34,20 @@ class ToPowTransformList extends Component {
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
     toPowTransform: state.featuresReducer.toPowTransform,
   };
-}
+};
 
-export default connect(mapStateToProps)(ToPowTransformList);
+const mapDispatchToProps = dispatch => {
+  return {
+    removeFromToPowTransform: (value) =>
+        dispatch(removeFromToPowTransform(value)),
+  };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ToPowTransformList);

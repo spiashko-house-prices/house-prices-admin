@@ -1,16 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {store} from '../../index';
 import {Button, Col, ListGroup, ListGroupItem, Row} from 'react-bootstrap';
 import {removeFromBaseFeatures} from '../../actions/actions';
 import './BaseFeatureList.css';
 
 class BaseFeatureList extends Component {
-  constructor() {
-    super();
-    store.subscribe(() => this.forceUpdate());
-  }
-
   render() {
     let {baseFeatures} = this.props;
     let itemList = baseFeatures.map((item, index) => (
@@ -24,7 +18,7 @@ class BaseFeatureList extends Component {
                   bsSize="xsmall"
                   bsStyle="danger"
                   onClick={() =>
-                      store.dispatch(removeFromBaseFeatures(item))}>
+                      this.props.removeFromBaseFeatures(item)}>
                 Delete
               </Button>
             </Col>
@@ -40,10 +34,20 @@ class BaseFeatureList extends Component {
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
     baseFeatures: state.featuresReducer.baseFeatures,
   };
-}
+};
 
-export default connect(mapStateToProps)(BaseFeatureList);
+const mapDispatchToProps = dispatch => {
+  return {
+    removeFromBaseFeatures: (value) =>
+        dispatch(removeFromBaseFeatures(value)),
+  };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(BaseFeatureList);
