@@ -5,10 +5,6 @@ import './MyNavBar.css';
 import {connect} from 'react-redux';
 
 class MyNavBar extends Component {
-  constructor() {
-    super();
-  }
-
   render() {
     return (
         <Navbar inverse collapseOnSelect>

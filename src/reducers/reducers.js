@@ -46,7 +46,6 @@ const defDataset = {
 function datasetReducer(state = defDataset, action){
   switch (action.type) {
     case CHANGE_DATASET:
-      console.log("CHANGE_DATASET");
       switch (action.datasetName){
         case "ames":
           return {...state, dataset: amesDataset};

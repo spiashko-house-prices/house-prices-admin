@@ -21,7 +21,6 @@ import ToBooleanTransformList
 import AddMethod from '../AddMethod/AddMethod';
 import MethodList from '../MethodList/MethodList';
 import ResponseArea from '../ResponseArea/ResponseArea';
-import {amesDataset} from '../../index';
 
 class MainView extends Component {
 
@@ -32,7 +31,6 @@ class MainView extends Component {
   }
 
   componentDidMount() {
-    console.log("componentDidMount");
     this.performLoading(this.props.dataset);
   }
 
@@ -102,7 +100,6 @@ class MainView extends Component {
       methods: this.props.methods,
     };
     let {backend, username, password} = this.props.dataset;
-    console.log(backend);
 
     console.log('trainObject: ', trainObject);
 
@@ -201,8 +198,6 @@ class MainView extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log("mapStateToProps");
-
   return {
     baseFeatures: state.featuresReducer.baseFeatures,
     toPowTransform: state.featuresReducer.toPowTransform,
