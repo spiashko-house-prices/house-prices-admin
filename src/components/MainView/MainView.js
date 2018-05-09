@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {
-  loadAdminModel, loadAllFeatures,
+  loadAdminModel,
+  loadAllFeatures,
   loadErrors,
   loadingAllFeatures,
   loadMethods,
@@ -34,8 +35,8 @@ class MainView extends Component {
     this.performLoading(this.props.dataset);
   }
 
-  componentWillReceiveProps(nextProps){
-    if(this.props.dataset !== nextProps.dataset){
+  componentWillReceiveProps(nextProps) {
+    if (this.props.dataset !== nextProps.dataset) {
       this.performLoading(nextProps.dataset);
     }
   }
@@ -129,8 +130,8 @@ class MainView extends Component {
   }
 
   render() {
-    if (this.props.status === 'loading'){
-      return (<h1>Loading...</h1>)
+    if (this.props.status === 'loading') {
+      return (<h1>Loading...</h1>);
     }
     return (
         <Grid>

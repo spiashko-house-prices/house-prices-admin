@@ -6,7 +6,8 @@ import {
   ADD_TO_TO_POW_TRANSFORM,
   ADD_TRAIN_METHOD,
   ALL_FEATURES_LOADED,
-  ALL_FEATURES_LOADING, CHANGE_DATASET,
+  ALL_FEATURES_LOADING,
+  CHANGE_DATASET,
   CHANGE_SELECTED_BASE_FEATURE,
   CHANGE_SELECTED_TO_BOOLEAN_TRANSFORM,
   CHANGE_SELECTED_TO_LOG_TRANSFORM,
@@ -43,13 +44,13 @@ const defDataset = {
   dataset: amesDataset,
 };
 
-function datasetReducer(state = defDataset, action){
+function datasetReducer(state = defDataset, action) {
   switch (action.type) {
     case CHANGE_DATASET:
-      switch (action.datasetName){
-        case "ames":
+      switch (action.datasetName) {
+        case 'ames':
           return {...state, dataset: amesDataset};
-        case "kc":
+        case 'kc':
           return {...state, dataset: kcDataset};
         default:
           return {...state, dataset: amesDataset};
@@ -290,7 +291,8 @@ function featuresReducer(state = defFeatures, action) {
       });
       return {
         ...state,
-        availableForBooleanTransform: state.availableForBooleanTransform.slice(0),
+        availableForBooleanTransform: state.availableForBooleanTransform.slice(
+            0),
         toBooleanTransform: state.toBooleanTransform.slice(0),
         selectedToBooleanTransform: state.availableForBooleanTransform[0],
       };
@@ -305,7 +307,8 @@ function featuresReducer(state = defFeatures, action) {
       state.availableForBooleanTransform.push(action.featureName);
       return {
         ...state,
-        availableForBooleanTransform: state.availableForBooleanTransform.slice(0),
+        availableForBooleanTransform: state.availableForBooleanTransform.slice(
+            0),
         toBooleanTransform: state.toBooleanTransform.slice(0),
         selectedToBooleanTransform: action.featureName,
       };
